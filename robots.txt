@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ninja-tyden.webdo24.cz/sitemap.xml
