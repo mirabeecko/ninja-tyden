@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Ninja Týden – letní příměstský tábor pro děti 6–12 let. Vhodné i pro dívky! Překážkové dráhy, ninja dovednosti, balanční trénink. Garance: silnější, rychlejší, opatrnější. Přihlaste se na léto 2025.">
 <title>Ninja Týden | Letní tábor pro děti 6–12 let</title>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K946RX5J');</script>
+<!-- End Google Tag Manager -->
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -63,16 +70,12 @@
   .shape-1 { width: 500px; height: 500px; top: -100px; right: -100px; }
   .shape-2 { width: 300px; height: 300px; bottom: -50px; left: -50px; background: rgba(245,158,11,0.08); }
   .hero-content { max-width: 860px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
-  .hero-emoji { font-size: 4rem; margin-bottom: 1rem; display: block; animation: bounce 2s infinite; }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
+  .hero-emoji { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
   .hero-badge {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    background: rgba(245,158,11,0.2);
-    border: 1px solid rgba(245,158,11,0.4);
-    color: var(--accent); padding: 0.4rem 1rem; border-radius: 100px;
+    background: rgba(245,158,11,0.15);
+    border: 1px solid rgba(245,158,11,0.3);
+    color: #fbbf24; padding: 0.4rem 1rem; border-radius: 6px;
     font-size: 0.85rem; font-weight: 700; margin-bottom: 1.5rem;
   }
   .hero h1 {
@@ -90,20 +93,20 @@
     display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem;
   }
   .pill {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white; padding: 0.4rem 0.9rem;
-    border-radius: 100px; font-size: 0.875rem; font-weight: 600;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #e2e8f0; padding: 0.35rem 0.8rem;
+    border-radius: 6px; font-size: 0.875rem; font-weight: 500;
   }
   .btn-hero {
     display: inline-block;
     background: linear-gradient(135deg, var(--accent), var(--orange));
-    color: white; padding: 1.1rem 3rem;
-    border-radius: 100px; font-weight: 800; font-size: 1.15rem;
+    color: white; padding: 1rem 2.5rem;
+    border-radius: 10px; font-weight: 700; font-size: 1.1rem;
     text-decoration: none; transition: all 0.2s;
-    box-shadow: 0 6px 25px rgba(245,158,11,0.4);
+    box-shadow: 0 4px 16px rgba(245,158,11,0.3);
   }
-  .btn-hero:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 35px rgba(245,158,11,0.5); }
+  .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,0.4); }
   .hero-note { color: #64748b; font-size: 0.85rem; margin-top: 1rem; }
   .price-tag {
     display: inline-block; margin-top: 1.5rem;
@@ -118,7 +121,7 @@
   .container { max-width: 1100px; margin: 0 auto; }
   .section-tag {
     display: inline-block;
-    background: #dcfce7; color: var(--primary);
+    background: #dcfce7; color: #14532d;
     padding: 0.3rem 0.8rem; border-radius: 6px;
     font-size: 0.8rem; font-weight: 700;
     letter-spacing: 0.08em; text-transform: uppercase;
@@ -140,19 +143,19 @@
   }
   .feature-item:last-child { border-bottom: none; }
   .feature-icon {
-    width: 48px; height: 48px; border-radius: 12px;
+    width: 44px; height: 44px; border-radius: 8px;
     background: linear-gradient(135deg, var(--primary), #22c55e);
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem; flex-shrink: 0;
+    font-size: 1.2rem; flex-shrink: 0;
   }
   .feature-text h4 { font-weight: 700; margin-bottom: 0.2rem; }
   .feature-text p { color: var(--muted); font-size: 0.9rem; }
   .info-box {
     background: linear-gradient(135deg, var(--dark), #0f2a1a);
-    border-radius: 20px; padding: 2.5rem; color: white;
+    border-radius: 12px; padding: 2.5rem; color: white;
     text-align: center;
   }
-  .info-big { font-size: 4rem; margin-bottom: 0.5rem; }
+  .info-big { font-size: 2.5rem; margin-bottom: 0.5rem; }
   .info-box h3 { font-size: 1.5rem; font-weight: 800; color: var(--accent); margin-bottom: 0.5rem; }
   .info-box p { color: #94a3b8; }
   .info-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 1.5rem 0; }
@@ -164,9 +167,9 @@
   /* NINJA KID IMAGE */
   .ninja-kid-img-wrapper {
     position: relative;
-    border-radius: 24px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
     margin-top: 2rem;
   }
   .ninja-kid-img-wrapper img {
@@ -198,13 +201,13 @@
   @media(max-width:700px){ .program-grid { grid-template-columns: 1fr 1fr; } }
   @media(max-width:450px){ .program-grid { grid-template-columns: 1fr; } }
   .program-item {
-    background: white; border-radius: 14px; padding: 1.25rem;
-    border: 2px solid var(--border); text-align: center;
+    background: white; border-radius: 8px; padding: 1.25rem;
+    border: 1px solid var(--border); text-align: center;
     transition: all 0.2s;
   }
-  .program-item:hover { border-color: var(--primary); transform: translateY(-2px); }
+  .program-item:hover { border-color: var(--primary); }
   .prog-time { font-size: 0.75rem; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
-  .prog-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .prog-icon { font-size: 1.25rem; margin-bottom: 0.5rem; }
   .prog-name { font-weight: 700; font-size: 0.9rem; }
 
   /* PRO KOHO */
@@ -212,32 +215,32 @@
   .pro-koho-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2rem; margin-top: 3rem; }
   @media(max-width:700px){ .pro-koho-grid { grid-template-columns:1fr; } }
   .koho-card {
-    background: white; border-radius: 18px; padding: 2rem;
-    border: 2px solid var(--border); text-align: center;
+    background: white; border-radius: 10px; padding: 2rem;
+    border: 1px solid var(--border); text-align: center;
     transition: all 0.2s;
   }
-  .koho-card:hover { border-color: var(--primary); box-shadow: 0 8px 24px rgba(22,163,74,0.1); }
-  .koho-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .koho-card:hover { border-color: var(--primary); }
+  .koho-icon { font-size: 1.5rem; margin-bottom: 1rem; }
   .koho-card h3 { font-weight: 800; font-size: 1.15rem; margin-bottom: 0.75rem; }
   .koho-card p { color: var(--muted); font-size: 0.9rem; }
   .koho-tag {
     display: inline-block; margin-top: 0.75rem;
-    background: #dcfce7; color: var(--primary);
-    padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.8rem; font-weight: 700;
+    background: #dcfce7; color: #14532d;
+    padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600;
   }
 
   /* CENA */
-  .cena-wrap { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 24px; padding: 3rem; margin-top: 3rem; text-align: center; }
+  .cena-wrap { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 12px; padding: 3rem; margin-top: 3rem; text-align: center; }
   .cena-big { font-size: clamp(3rem, 8vw, 5rem); font-weight: 900; color: var(--primary); line-height: 1; }
   .cena-per { color: var(--muted); font-size: 1.1rem; margin-bottom: 2rem; }
   .includes-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 2rem; }
   @media(max-width:700px){ .includes-grid { grid-template-columns: 1fr 1fr; } }
   .include-item {
-    background: white; border-radius: 12px; padding: 1rem;
+    background: white; border-radius: 8px; padding: 1rem;
     font-size: 0.9rem; font-weight: 600;
     border: 1px solid var(--border); text-align: center;
   }
-  .include-item span { display: block; font-size: 1.5rem; margin-bottom: 0.3rem; }
+  .include-item span { display: block; font-size: 1.25rem; margin-bottom: 0.3rem; }
   .early-badge {
     display: inline-flex; align-items: center; gap: 0.5rem;
     background: #fef3c7; border: 1px solid #fde68a;
@@ -277,7 +280,7 @@
   .reg-form {
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px; padding: 2rem;
+    border-radius: 12px; padding: 2rem;
   }
   .reg-form h3 { color: white; font-weight: 700; margin-bottom: 1.5rem; font-size: 1.1rem; }
   .form-group { margin-bottom: 1rem; }
@@ -314,28 +317,28 @@
   @media(max-width:900px){ .bento-grid { grid-template-columns: 1fr 1fr; } }
   @media(max-width:500px){ .bento-grid { grid-template-columns: 1fr; } }
   .bento-card {
-    background: white; border-radius: 20px; padding: 1.75rem;
+    background: white; border-radius: 10px; padding: 1.75rem;
     border: 1px solid var(--border);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     transition: all 0.25s ease;
   }
   .bento-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(22,163,74,0.12);
-    border-color: rgba(22,163,74,0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    border-color: rgba(22,163,74,0.2);
   }
-  .bento-emoji { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .bento-emoji { font-size: 1.5rem; margin-bottom: 1rem; display: block; }
   .bento-card h4 { font-weight: 800; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--text); }
   .bento-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
   .about-guarantee {
     margin-top: 2.5rem;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: 20px; padding: 2rem 2.5rem; color: white;
+    border-radius: 12px; padding: 2rem 2.5rem; color: white;
     display: flex; gap: 1.5rem; align-items: center;
-    box-shadow: 0 12px 32px rgba(22,163,74,0.25);
+    box-shadow: 0 6px 20px rgba(22,163,74,0.15);
   }
   @media(max-width:600px){ .about-guarantee { flex-direction: column; text-align: center; } }
-  .about-guarantee-icon { font-size: 3rem; flex-shrink: 0; }
+  .about-guarantee-icon { font-size: 2rem; flex-shrink: 0; }
   .about-guarantee strong { font-size: 1.15rem; display: block; margin-bottom: 0.35rem; }
   .about-guarantee p { margin: 0; opacity: 0.95; font-size: 0.95rem; }
 
@@ -347,27 +350,26 @@
   @media(max-width:900px){ .koho-modern-grid { grid-template-columns: 1fr 1fr; } }
   @media(max-width:500px){ .koho-modern-grid { grid-template-columns: 1fr; } }
   .koho-modern-card {
-    background: white; border-radius: 24px; padding: 2rem 1.5rem; text-align: center;
+    background: white; border-radius: 10px; padding: 2rem 1.5rem; text-align: center;
     border: 1px solid var(--border);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     transition: all 0.3s ease; position: relative; overflow: hidden;
   }
   .koho-modern-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
     background: linear-gradient(90deg, var(--accent), var(--orange));
     opacity: 0; transition: opacity 0.3s;
   }
   .koho-modern-card:hover::before { opacity: 1; }
   .koho-modern-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   }
   .koho-modern-icon {
-    width: 64px; height: 64px; border-radius: 18px;
+    width: 44px; height: 44px; border-radius: 10px;
     background: linear-gradient(135deg, var(--primary), #22c55e);
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem; margin: 0 auto 1.25rem;
-    box-shadow: 0 8px 20px rgba(22,163,74,0.25);
+    font-size: 1.3rem; margin: 0 auto 1.25rem;
   }
   .koho-modern-card h3 { font-weight: 800; font-size: 1.1rem; margin-bottom: 0.6rem; }
   .koho-modern-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
@@ -382,7 +384,7 @@
   .cena-card {
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 28px; padding: 3rem 2rem; margin-top: 3rem;
+    border-radius: 16px; padding: 3rem 2rem; margin-top: 3rem;
     backdrop-filter: blur(10px);
     max-width: 700px; margin-left: auto; margin-right: auto;
   }
@@ -400,15 +402,15 @@
   .include-modern-item {
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px; padding: 1.25rem 0.75rem;
+    border-radius: 10px; padding: 1.25rem 0.75rem;
     text-align: center; transition: all 0.2s;
   }
   .include-modern-item:hover {
     background: rgba(255,255,255,0.1);
     border-color: rgba(245,158,11,0.3);
-    transform: translateY(-3px);
+    transform: translateY(-2px);
   }
-  .include-modern-item .emoji { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+  .include-modern-item .emoji { font-size: 1.25rem; display: block; margin-bottom: 0.5rem; }
   .include-modern-item span { color: white; font-weight: 700; font-size: 0.85rem; display: block; }
 
   /* VŠESTRANNOST FULL — PUNCHY */
@@ -434,17 +436,17 @@
   .vsestr-card {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px; padding: 2.25rem;
+    border-radius: 12px; padding: 2.25rem;
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
   }
   .vsestr-card:hover {
     background: rgba(255,255,255,0.07);
     border-color: rgba(245,158,11,0.25);
-    transform: translateY(-6px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
   }
-  .vsestr-card .emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .vsestr-card .emoji { font-size: 1.75rem; margin-bottom: 1rem; display: block; }
   .vsestr-card h4 { font-weight: 800; font-size: 1.25rem; margin-bottom: 0.75rem; color: white; }
   .vsestr-card p { color: #94a3b8; font-size: 0.95rem; line-height: 1.75; }
 
@@ -456,13 +458,13 @@
   .vsestr-stat {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px; padding: 1.75rem 1.25rem;
+    border-radius: 12px; padding: 1.75rem 1.25rem;
     text-align: center; transition: all 0.3s ease;
   }
   .vsestr-stat:hover {
     background: rgba(255,255,255,0.07);
     border-color: rgba(22,163,74,0.3);
-    transform: translateY(-4px);
+    transform: translateY(-2px);
   }
   .vsestr-stat-num {
     font-size: 2.5rem; font-weight: 900;
@@ -475,7 +477,7 @@
   .vsestr-dark-box {
     background: linear-gradient(135deg, rgba(5,46,22,0.6), rgba(15,23,42,0.6));
     border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 24px; padding: 2.5rem; color: white; margin-top: 1.5rem;
+    border-radius: 12px; padding: 2.5rem; color: white; margin-top: 1.5rem;
     backdrop-filter: blur(10px);
   }
   .vsestr-dark-box h4 { color: #86efac; font-weight: 800; font-size: 1.2rem; margin-bottom: 1rem; }
@@ -487,12 +489,12 @@
   .vsestr-highlight {
     background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(234,88,12,0.05));
     border: 1px solid rgba(245,158,11,0.2);
-    border-radius: 24px; padding: 2rem; margin-top: 1.5rem;
+    border-radius: 12px; padding: 2rem; margin-top: 1.5rem;
     display: flex; gap: 1.5rem; align-items: flex-start;
     backdrop-filter: blur(10px);
   }
   @media(max-width:600px){ .vsestr-highlight { flex-direction: column; text-align: center; } }
-  .vsestr-highlight .emoji { font-size: 3rem; flex-shrink: 0; }
+  .vsestr-highlight .emoji { font-size: 1.75rem; flex-shrink: 0; }
   .vsestr-highlight h4 { color: #fbbf24; font-weight: 800; font-size: 1.15rem; margin-bottom: 0.5rem; }
   .vsestr-highlight p { color: #e2e8f0; font-size: 0.95rem; line-height: 1.75; margin: 0; }
 
@@ -500,21 +502,21 @@
   .faq-section { background: #f8fafc; }
   .faq-list { max-width: 800px; margin: 2rem auto 0; }
   .faq-item {
-    background: white; border-radius: 14px; padding: 1.5rem;
+    background: white; border-radius: 8px; padding: 1.5rem;
     margin-bottom: 1rem; border: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
   }
   .faq-q {
     font-weight: 800; color: var(--text); font-size: 1.05rem;
     margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;
   }
   .faq-q::before { content: '❓'; }
-  .faq-a { color: var(--muted); line-height: 1.7; }
+  .faq-a { color: #475569; line-height: 1.7; }
   .faq-a strong { color: var(--primary-dark); }
 
   /* FOOTER */
   footer {
-    background: #030712; color: #64748b;
+    background: #030712; color: #94a3b8;
     text-align: center; padding: 2rem;
     font-size: 0.85rem;
   }
@@ -541,8 +543,13 @@
   }
   .skip-link:focus { top: 0; }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K946RX5J"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <a href="#main" class="skip-link">Přeskočit na hlavní obsah</a>
 
@@ -722,34 +729,31 @@
     </div>
     <div class="cena-card">
       <div class="cena-big">3 490 Kč</div>
-      <p class="cena-per">za celý turnus · jedna cena, žádné příplatky</p>
+      <p class="cena-per">za celý 5denní turnus (Po–Pá 8:00–16:00) · jedna cena, žádné příplatky</p>
       <div class="includes-modern">
         <div class="include-modern-item">
           <span class="emoji">🍽️</span>
           <span>Oběd</span>
         </div>
         <div class="include-modern-item">
-          <span class="emoji">🎽</span>
-          <span>Ninja tričko</span>
+          <span class="emoji">🍎</span>
+          <span>Svačiny</span>
         </div>
         <div class="include-modern-item">
-          <span class="emoji">🥇</span>
-          <span>Diplom</span>
+          <span class="emoji">💧</span>
+          <span>Pitný režim</span>
         </div>
         <div class="include-modern-item">
-          <span class="emoji">📸</span>
-          <span>Fotky</span>
+          <span class="emoji">🏕️</span>
+          <span>Program v přírodě</span>
         </div>
         <div class="include-modern-item">
-          <span class="emoji">🛡️</span>
-          <span>Pojištění</span>
-        </div>
-        <div class="include-modern-item">
-          <span class="emoji">👨‍🏫</span>
-          <span>Instruktoři</span>
+          <span class="emoji">🏃</span>
+          <span>Vybavení a pomůcky</span>
         </div>
       </div>
-      <a href="#registrace" class="btn-hero" style="margin-top:0.5rem;">Přihlásit dítě →</a>
+      <p style="color:#94a3b8; font-size:0.95rem; margin-top:1.5rem; line-height:1.7;">Přiveďte dítě v 8:00 a vyzvedněte v 16:00. O vše ostatní se postaráme my — strava, pitný režim, program, materiál i vybavení. <strong>Žádné skryté poplatky.</strong></p>
+      <a href="#registrace" class="btn-hero" style="margin-top:1.5rem;">Přihlásit dítě →</a>
     </div>
   </div>
 </section>
@@ -773,7 +777,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q">Lze zrušit účast?</div>
-        <div class="faq-a">Ano, účast lze zrušit nejpozději <strong>20 dní před začátkem akce</strong>. V takovém případě vám bude vrácena <strong>celá částka 3 490 Kč</strong> na váš účet. Je potřeba zaslat žádost prostřednictvím <a href="zruseni.html" style="color:var(--primary);font-weight:700;text-decoration:underline;">formuláře pro zrušení účasti →</a>.</div>
+        <div class="faq-a">Ano, účast lze zrušit nejpozději <strong>20 dní před začátkem akce</strong>. V takovém případě vám bude vrácena <strong>celá částka 3 490 Kč</strong> na váš účet. Je potřeba zaslat žádost prostřednictvím <a href="zruseni.html" style="color:#14532d;font-weight:700;text-decoration:underline;">formuláře pro zrušení účasti →</a>.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">Kde přesně trénink probíhá?</div>
@@ -816,14 +820,42 @@
         <div class="reg-detail">
           <div class="reg-detail-icon">💰</div>
           <div>
-            <div class="reg-detail-label">Platba</div>
-            <div class="reg-detail-val">Platba 3 490 Kč online kartou</div>
+            <div class="reg-detail-label">Cena</div>
+            <div class="reg-detail-val">3 490 Kč (karta nebo převodem)</div>
           </div>
         </div>
         <div class="countdown-box">
           <div class="countdown-label">🎫 Přihláška & platba</div>
-          <div style="color:white; font-size:0.95rem; font-weight:600; margin-top:0.5rem;">Vyplň formulář a zaplať online</div>
-          <div style="color:#94a3b8; font-size:0.8rem; margin-top:0.25rem">Bezpečná platba přes Stripe</div>
+          <div style="color:white; font-size:0.95rem; font-weight:600; margin-top:0.5rem;">Vyplň formulář a vyber způsob platby</div>
+          <div style="color:#94a3b8; font-size:0.8rem; margin-top:0.25rem">Online kartou (Stripe) nebo bankovním převodem</div>
+        </div>
+
+        <!-- Platební údaje pro převod -->
+        <div style="margin-top:1.5rem;" id="bank-transfer-box">
+          <div style="color:var(--accent); font-size:0.8rem; font-weight:700; margin-bottom:0.5rem;">🏦 Platba převodem</div>
+          <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1rem 1.25rem;">
+            <div style="margin-bottom:0.75rem;">
+              <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Příjemce</div>
+              <div style="color:white; font-weight:600; font-size:0.9rem;">[Doplňte název]</div>
+            </div>
+            <div style="margin-bottom:0.75rem;">
+              <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Číslo účtu / IBAN</div>
+              <div style="color:white; font-weight:600; font-size:0.9rem;">CZxx XXXX XXXX XXXX XXXX XXXX</div>
+            </div>
+            <div style="margin-bottom:0.75rem;">
+              <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Částka</div>
+              <div style="color:white; font-weight:600; font-size:0.9rem;">3 490 Kč</div>
+            </div>
+            <div style="margin-bottom:0.75rem;">
+              <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Variabilní symbol</div>
+              <div style="color:white; font-weight:600; font-size:0.9rem;">[Doplňte VS]</div>
+            </div>
+            <div style="text-align:center; margin-top:1rem;">
+              <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.5rem;">Naskenujte QR kód v bankovní aplikaci</div>
+              <div id="qr-payment" style="display:inline-block; background:white; padding:8px; border-radius:8px;"></div>
+            </div>
+            <p style="color:#64748b; font-size:0.75rem; text-align:center; margin-top:0.75rem; margin-bottom:0;">Do zprávy pro příjemce uveďte jméno dítěte.</p>
+          </div>
         </div>
 
         <!-- Mapa skiAreál Komárka -->
@@ -876,6 +908,19 @@
           </div>
           <input type="hidden" name="web_id" value="ninja-tyden">
           <div class="form-group">
+            <label>Způsob platby</label>
+            <div style="display:flex; gap:1.25rem; flex-wrap:wrap; margin-top:0.5rem;">
+              <label style="display:flex; align-items:center; gap:0.4rem; color:white; font-weight:500; cursor:pointer; font-size:0.9rem;">
+                <input type="radio" name="payment_method" value="card" checked style="accent-color:var(--accent); width:auto;">
+                💳 Online kartou (Stripe)
+              </label>
+              <label style="display:flex; align-items:center; gap:0.4rem; color:white; font-weight:500; cursor:pointer; font-size:0.9rem;">
+                <input type="radio" name="payment_method" value="transfer" style="accent-color:var(--accent); width:auto;">
+                🏦 Bankovním převodem
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
             <label>Fyzická zdatnost dítěte</label>
             <div style="display:flex; gap:1.25rem; flex-wrap:wrap; margin-top:0.5rem;">
               <label style="display:flex; align-items:center; gap:0.4rem; color:white; font-weight:500; cursor:pointer; font-size:0.9rem;">
@@ -897,6 +942,42 @@
           <div id="form-status" style="margin-top:1rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.9rem;font-weight:600;text-align:center;display:none;"></div>
         </form>
         <iframe name="webhook-frame" style="display:none"></iframe>
+
+        <!-- Potvrzení při platbě převodem -->
+        <div id="payment-transfer-info" style="display:none;">
+          <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:1.5rem; text-align:center; margin-top:1.5rem;">
+            <div style="color:var(--accent); font-size:2rem; margin-bottom:0.75rem;">✅</div>
+            <h3 style="color:white; font-weight:700; margin-bottom:0.75rem; font-size:1.1rem;">Přihláška odeslána!</h3>
+            <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:1.5rem;">Pro dokončení registrace prosím uhraďte částku bankovním převodem. Údaje najdete níže.</p>
+            <div style="background:rgba(0,0,0,0.2); border-radius:12px; padding:1.25rem; text-align:left; margin-bottom:1.5rem;">
+              <div style="margin-bottom:0.75rem;">
+                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Příjemce</div>
+                <div style="color:white; font-weight:600;">[Doplňte název]</div>
+              </div>
+              <div style="margin-bottom:0.75rem;">
+                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Číslo účtu / IBAN</div>
+                <div style="color:white; font-weight:600;">CZxx XXXX XXXX XXXX XXXX XXXX</div>
+              </div>
+              <div style="margin-bottom:0.75rem;">
+                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Částka</div>
+                <div style="color:white; font-weight:600;">3 490 Kč</div>
+              </div>
+              <div style="margin-bottom:0.75rem;">
+                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Variabilní symbol</div>
+                <div style="color:white; font-weight:600;">[Doplňte VS]</div>
+              </div>
+              <div>
+                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Zpráva pro příjemce</div>
+                <div style="color:white; font-weight:600;" id="transfer-msg">Ninja Týden</div>
+              </div>
+            </div>
+            <div style="text-align:center;">
+              <div style="color:#94a3b8; font-size:0.8rem; margin-bottom:0.75rem;">Naskenujte QR kód v bankovní aplikaci</div>
+              <div id="qr-payment-transfer" style="display:inline-block; background:white; padding:10px; border-radius:8px;"></div>
+            </div>
+            <p style="color:#64748b; font-size:0.82rem; margin-top:1rem; margin-bottom:0;">Po obdržení platby vám pošleme potvrzení na e-mail.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -913,12 +994,36 @@ function handleSubmit(e) {
   const form = e.target;
   const btn = form.querySelector('.btn-register');
   const status = document.getElementById('form-status');
+  const paymentMethod = form.querySelector('input[name="payment_method"]:checked').value;
+  const childName = document.getElementById('child_name').value || 'Dítě';
 
   btn.textContent = '⏳ Odesílám...';
   btn.disabled = true;
   if (status) { status.style.display = 'none'; }
 
   setTimeout(function() {
+    if (paymentMethod === 'transfer') {
+      // Skryjeme formulář, zobrazíme platební údaje
+      form.style.display = 'none';
+      document.getElementById('payment-transfer-info').style.display = 'block';
+      document.getElementById('transfer-msg').textContent = 'Ninja Týden — ' + childName;
+
+      // Vygenerujeme QR kód pro konkrétní dítě
+      var qrContainer = document.getElementById('qr-payment-transfer');
+      if (qrContainer && typeof QRCode !== 'undefined' && qrContainer.innerHTML === '') {
+        var spayd = 'SPD*1.0*ACC:CZ0000000000000000000000*AM:3490.00*CC:CZK*MSG:Ninja Tyden ' + childName;
+        new QRCode(qrContainer, {
+          text: spayd,
+          width: 180,
+          height: 180,
+          colorDark : '#000000',
+          colorLight : '#ffffff',
+          correctLevel : QRCode.CorrectLevel.M
+        });
+      }
+      return;
+    }
+
     btn.textContent = '✅ Přihláška odeslána! Přesměrovávám na platbu...';
     btn.style.background = '#16a34a';
     form.reset();
@@ -933,6 +1038,23 @@ function handleSubmit(e) {
     }, 800);
   }, 1000);
 }
+
+// Inicializace QR kódu pro obecný převod v levém sloupci
+document.addEventListener('DOMContentLoaded', function() {
+  var qrContainer = document.getElementById('qr-payment');
+  if (qrContainer && typeof QRCode !== 'undefined') {
+    var spayd = 'SPD*1.0*ACC:CZ0000000000000000000000*AM:3490.00*CC:CZK*MSG:Ninja Tyden';
+    new QRCode(qrContainer, {
+      text: spayd,
+      width: 160,
+      height: 160,
+      colorDark : '#000000',
+      colorLight : '#ffffff',
+      correctLevel : QRCode.CorrectLevel.M
+    });
+  }
+});
+
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();

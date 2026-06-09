@@ -1,0 +1,58 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-06-01 17:50:36",
+  "containerVersion": {
+    "name": "Ninja Týden – GA4 Config",
+    "containerId": "GTM-K946RX5J",
+    "variable": [],
+    "tag": [
+      {
+        "name": "GA4 – Ninja Týden",
+        "type": "gaawc",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendPageView",
+            "value": "true"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "enableSendToServerContainer",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementId",
+            "value": "G-GBBN7TXHSV"
+          }
+        ],
+        "firingTriggerId": [
+          "2147479553"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT"
+      }
+    ],
+    "trigger": [
+      {
+        "name": "All Pages",
+        "type": "PAGEVIEW",
+        "id": "2147479553",
+        "firingTriggerId": []
+      }
+    ],
+    "builtInVariable": [
+      {
+        "type": "PAGE_URL",
+        "name": "Page URL"
+      },
+      {
+        "type": "PAGE_PATH",
+        "name": "Page Path"
+      },
+      {
+        "type": "PAGE_HOSTNAME",
+        "name": "Page Hostname"
+      }
+    ]
+  }
+}
