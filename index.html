@@ -526,6 +526,60 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     section { padding: 3rem 1.25rem; }
     nav { padding: 0.875rem 1.25rem; }
   }
+  /* ── STRIPE EMBEDDED CHECKOUT MODAL ─────────────────────────── */
+  #stripe-modal {
+    display: none;
+    position: fixed; inset: 0; z-index: 100000;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  #stripe-modal.open { display: flex; }
+  #stripe-modal-inner {
+    background: white; border-radius: 16px;
+    width: 100%; max-width: 560px;
+    max-height: 92vh; overflow-y: auto;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+    position: relative;
+  }
+  #stripe-modal-header {
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; background: white; z-index: 1;
+    border-radius: 16px 16px 0 0;
+  }
+  #stripe-modal-body { padding: 1.5rem; }
+  #stripe-modal-close {
+    background: none; border: none; cursor: pointer;
+    font-size: 1.1rem; line-height: 1; color: #94a3b8;
+    padding: 0.35rem 0.6rem; border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+  }
+  #stripe-modal-close:hover { background: #f1f5f9; color: #1e293b; }
+  #checkout-loading { text-align: center; padding: 3rem 1rem; }
+  .checkout-spinner {
+    width: 42px; height: 42px;
+    border: 3px solid #e2e8f0; border-top-color: #16a34a;
+    border-radius: 50%;
+    animation: stripe-spin 0.8s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes stripe-spin { to { transform: rotate(360deg); } }
+  #checkout-error {
+    display: none;
+    background: #fef2f2; border: 1px solid #fecaca;
+    border-radius: 10px; padding: 1rem 1.25rem;
+    color: #991b1b; font-size: 0.88rem; text-align: center;
+    margin-bottom: 1rem; line-height: 1.6;
+  }
+  @media(max-width:600px){
+    #stripe-modal-inner { max-height: 96vh; border-radius: 12px; }
+  }
+  /* ─────────────────────────────────────────────────────────────── */
+
   /* Skip link */
   .skip-link {
     position: absolute;
@@ -544,6 +598,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .skip-link:focus { top: 0; }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -990,78 +1045,158 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <script>
-function handleSubmit(e) {
+// ── Configuration ─────────────────────────────────────────────────────────────
+// Update API_BASE to your production backend URL before deploying
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:3000'
+  : 'https://api.ninja-tyden.cz';
+
+// Your Stripe Publishable Key — get from https://dashboard.stripe.com/apikeys
+const STRIPE_PK = 'REPLACE_WITH_YOUR_STRIPE_PUBLISHABLE_KEY'; // pk_live_...
+
+// ── Stripe Modal ──────────────────────────────────────────────────────────────
+function openStripeModal() {
+  document.getElementById('stripe-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function() { document.getElementById('stripe-modal-close').focus(); }, 100);
+}
+
+function closeStripeModal() {
+  document.getElementById('stripe-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  if (window._stripeCheckout) {
+    window._stripeCheckout.destroy();
+    window._stripeCheckout = null;
+  }
+  document.getElementById('checkout').innerHTML = '';
+  document.getElementById('checkout-loading').style.display = 'block';
+  var errEl = document.getElementById('checkout-error');
+  errEl.style.display = 'none';
+  errEl.textContent = '';
+}
+
+// Close on overlay click
+document.getElementById('stripe-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeStripeModal();
+});
+
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.getElementById('stripe-modal').classList.contains('open')) {
+    closeStripeModal();
+  }
+});
+
+// ── Form Submit ───────────────────────────────────────────────────────────────
+async function handleSubmit(e) {
   const form = e.target;
   const btn = form.querySelector('.btn-register');
-  const status = document.getElementById('form-status');
   const paymentMethod = form.querySelector('input[name="payment_method"]:checked').value;
-  const childName = document.getElementById('child_name').value || 'Dítě';
+  const childName  = (document.getElementById('child_name').value  || '').trim() || 'Dítě';
+  const parentName = (document.getElementById('parent_name').value || '').trim();
+  const email      = (document.getElementById('email').value       || '').trim();
+  const phone      = (document.getElementById('phone').value       || '').trim();
 
   btn.textContent = '⏳ Odesílám...';
   btn.disabled = true;
-  if (status) { status.style.display = 'none'; }
 
-  setTimeout(function() {
-    if (paymentMethod === 'transfer') {
-      // Skryjeme formulář, zobrazíme platební údaje
+  // ── Bank transfer flow (unchanged) ──
+  if (paymentMethod === 'transfer') {
+    setTimeout(function() {
       form.style.display = 'none';
       document.getElementById('payment-transfer-info').style.display = 'block';
       document.getElementById('transfer-msg').textContent = 'Ninja Týden — ' + childName;
 
-      // Vygenerujeme QR kód pro konkrétní dítě
       var qrContainer = document.getElementById('qr-payment-transfer');
       if (qrContainer && typeof QRCode !== 'undefined' && qrContainer.innerHTML === '') {
         var spayd = 'SPD*1.0*ACC:CZ0000000000000000000000*AM:3490.00*CC:CZK*MSG:Ninja Tyden ' + childName;
         new QRCode(qrContainer, {
           text: spayd,
-          width: 180,
-          height: 180,
-          colorDark : '#000000',
-          colorLight : '#ffffff',
-          correctLevel : QRCode.CorrectLevel.M
+          width: 180, height: 180,
+          colorDark: '#000000', colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
         });
       }
-      return;
-    }
+    }, 1000);
+    return;
+  }
 
-    btn.textContent = '✅ Přihláška odeslána! Přesměrovávám na platbu...';
-    btn.style.background = '#16a34a';
-    form.reset();
-    if (status) {
-      status.textContent = 'Děkujeme! Přesměrováváme vás na bezpečnou platbu Stripe.';
-      status.style.background = '#dcfce7';
-      status.style.color = '#166534';
-      status.style.display = 'block';
-    }
-    setTimeout(function() {
-      window.open('https://buy.stripe.com/9B6dR86hJ13l1uYeff9EI03', '_blank');
-    }, 800);
-  }, 1000);
+  // ── Card payment — Stripe Embedded Checkout ──
+  openStripeModal();
+
+  try {
+    var res = await fetch(API_BASE + '/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ childName, parentName, email, phone }),
+    });
+
+    if (!res.ok) throw new Error('Server error ' + res.status);
+    var data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    var stripe   = Stripe(STRIPE_PK);
+    var checkout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret });
+    window._stripeCheckout = checkout;
+
+    document.getElementById('checkout-loading').style.display = 'none';
+    checkout.mount('#checkout');
+  } catch (err) {
+    console.error('Stripe checkout error:', err);
+    document.getElementById('checkout-loading').style.display = 'none';
+    var errEl = document.getElementById('checkout-error');
+    errEl.textContent = 'Nepodařilo se načíst platební formulář. Zkuste to prosím znovu nebo nás kontaktujte na info@ninjavirus.cz';
+    errEl.style.display = 'block';
+  } finally {
+    btn.textContent = '🥷 Přihlásit dítě na Ninja den!';
+    btn.disabled = false;
+  }
 }
 
-// Inicializace QR kódu pro obecný převod v levém sloupci
+// ── QR code (bank transfer panel, left column) ────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   var qrContainer = document.getElementById('qr-payment');
   if (qrContainer && typeof QRCode !== 'undefined') {
     var spayd = 'SPD*1.0*ACC:CZ0000000000000000000000*AM:3490.00*CC:CZK*MSG:Ninja Tyden';
     new QRCode(qrContainer, {
       text: spayd,
-      width: 160,
-      height: 160,
-      colorDark : '#000000',
-      colorLight : '#ffffff',
-      correctLevel : QRCode.CorrectLevel.M
+      width: 160, height: 160,
+      colorDark: '#000000', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
     });
   }
 });
 
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
+// ── Smooth scroll ─────────────────────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
     e.preventDefault();
     document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
   });
 });
 </script>
+  <!-- ── STRIPE EMBEDDED CHECKOUT MODAL ────────────────────────── -->
+  <div id="stripe-modal" role="dialog" aria-modal="true" aria-labelledby="stripe-modal-title">
+    <div id="stripe-modal-inner">
+      <div id="stripe-modal-header">
+        <div>
+          <div style="font-size:0.72rem;color:#64748b;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;">🔒 Zabezpečená platba · Stripe</div>
+          <div id="stripe-modal-title" style="font-weight:800;font-size:1.05rem;color:#0f172a;margin-top:0.2rem;">Ninja Týden 2025 — 3 490 Kč</div>
+        </div>
+        <button id="stripe-modal-close" onclick="closeStripeModal()" aria-label="Zavřít platební okno">✕</button>
+      </div>
+      <div id="stripe-modal-body">
+        <div id="checkout-error"></div>
+        <div id="checkout-loading">
+          <div class="checkout-spinner"></div>
+          <p style="color:#64748b;margin-top:1rem;font-size:0.9rem;">Připravuji platební formulář&hellip;</p>
+        </div>
+        <div id="checkout"></div>
+      </div>
+    </div>
+  </div>
+  <!-- ─────────────────────────────────────────────────────────────── -->
+
   <!-- webdo24.cz badge -->
   <style>#wd24-bar{position:fixed;bottom:0;left:0;right:0;z-index:99999;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(15,23,42,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.08);padding:10px 20px;font-family:-apple-system,'Inter',sans-serif;font-size:11px;font-weight:500;color:rgba(255,255,255,.5);box-shadow:0 -4px 16px rgba(0,0,0,.2)}#wd24-bar a{color:rgba(255,255,255,.85);text-decoration:none;font-weight:800;letter-spacing:-.02em;font-size:13px}#wd24-bar a span{color:#f97316}#wd24-bar a:hover{color:#fff}</style>
   <div id="wd24-bar">Web&nbsp;vytvořil&nbsp;<a href="https://webdo24.cz" target="_blank">webdo<span>24</span>.cz</a>&nbsp;·&nbsp;Profesionální web do 24&nbsp;hodin</div>
