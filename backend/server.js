@@ -92,8 +92,6 @@ app.post('/api/create-checkout-session', async (req, res) => {
     couponCode = '',
   } = req.body;
 
-  const BASE_PRICE = 349000; // 3 490 Kč in haléře
-  let unitAmount = BASE_PRICE;
   const sessionData = {
     ui_mode: 'embedded',
     line_items: [
@@ -104,12 +102,13 @@ app.post('/api/create-checkout-session', async (req, res) => {
             name: 'Ninja Týden 2025 – letní příměstský tábor',
             description: '7.–11. července 2025 · Po–Pá 8:00–16:00 · skiAreál Komárka · Vše v ceně',
           },
-          unit_amount: unitAmount,
+          unit_amount: 349000, // 3 490 Kč in haléře
         },
         quantity: 1,
       },
     ],
     mode: 'payment',
+    allow_promotion_codes: true,
     return_url: `${process.env.FRONTEND_URL || 'https://ninja-tyden.cz'}/dekujeme?session_id={CHECKOUT_SESSION_ID}`,
     ...(email && { customer_email: email }),
     locale: 'cs',
@@ -120,22 +119,6 @@ app.post('/api/create-checkout-session', async (req, res) => {
       coupon_code: couponCode || '',
     },
   };
-
-  // Apply coupon if provided
-  if (couponCode) {
-    try {
-      const promoCodes = await stripe.promotionCodes.list({
-        code: couponCode.trim(),
-        active: true,
-        limit: 1,
-      });
-      if (promoCodes.data.length > 0) {
-        sessionData.discounts = [{ promotion_code: promoCodes.data[0].id }];
-      }
-    } catch (err) {
-      console.warn('Coupon application error:', err.message);
-    }
-  }
 
   try {
     const session = await stripe.checkout.sessions.create(sessionData);
