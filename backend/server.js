@@ -25,6 +25,19 @@ app.use(cors({
   methods: ['GET', 'POST'],
 }));
 
+// ─── Security headers (CSP for Google & Stripe) ──────────────────────────────
+app.use((req, res, next) => {
+  res.setHeader('Content-Security-Policy',
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; " +
+    "script-src-elem 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; " +
+    "connect-src 'self' https://api.stripe.com https://www.google-analytics.com https://analytics.google.com; " +
+    "img-src 'self' data: https://*.stripe.com https://www.google-analytics.com https://google.com; " +
+    "frame-src 'self' https://js.stripe.com;"
+  );
+  next();
+});
+
 // Raw body must be parsed before express.json for Stripe webhook signature verification
 app.use('/api/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
