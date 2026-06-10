@@ -314,6 +314,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .btn-register:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,158,11,0.4); }
   .form-note { text-align: center; color: #64748b; font-size: 0.82rem; margin-top: 0.75rem; }
+  .coupon-row { display: flex; gap: 0.5rem; align-items: flex-start; }
+  .coupon-row input { flex: 1; }
+  .btn-coupon {
+    padding: 0.875rem 1.25rem;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px; color: white;
+    font-weight: 700; font-size: 0.85rem;
+    cursor: pointer; white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .btn-coupon:hover { background: rgba(255,255,255,0.18); }
+  .btn-coupon:disabled { opacity: 0.5; cursor: not-allowed; }
+  .coupon-msg {
+    font-size: 0.8rem; margin-top: 0.4rem;
+    min-height: 1.2rem;
+  }
+  .coupon-msg.ok { color: #4ade80; }
+  .coupon-msg.err { color: #f87171; }
+  .price-display {
+    text-align: center; margin: 0.75rem 0;
+    font-size: 0.95rem; color: #e2e8f0;
+  }
+  .price-display .old { text-decoration: line-through; color: #94a3b8; margin-right: 0.5rem; }
+  .price-display .new { font-weight: 800; color: #4ade80; font-size: 1.1rem; }
 
   /* MODERN O AKCI */
   .about-punch { text-align: center; max-width: 720px; margin: 0 auto 3rem; }
@@ -998,6 +1023,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </label>
             </div>
           </div>
+          <div class="form-group">
+            <label for="coupon_code">Slevový kód (nepovinné)</label>
+            <div class="coupon-row">
+              <input id="coupon_code" name="coupon_code" type="text" placeholder="Např. NINJA10" autocomplete="off">
+              <button type="button" class="btn-coupon" onclick="applyCoupon()">Aplikovat</button>
+            </div>
+            <div id="coupon-msg" class="coupon-msg"></div>
+          </div>
+          <div id="price-display" class="price-display" style="display:none;">
+            <span class="old" id="price-old">3 490 Kč</span>
+            <span class="new" id="price-new"></span>
+          </div>
           <button type="submit" class="btn-register">🥷 Přihlásit dítě na Ninja den!</button>
           <p class="form-note">🔒 Bezpečné přihlášení · Potvrzení do 2 hodin</p>
           <div id="form-status" style="margin-top:1rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.9rem;font-weight:600;text-align:center;display:none;"></div>
@@ -1093,6 +1130,57 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+// ── Coupon state ──────────────────────────────────────────────────────────────
+var _appliedCoupon = null;
+
+async function applyCoupon() {
+  var input = document.getElementById('coupon_code');
+  var msgEl = document.getElementById('coupon-msg');
+  var btn   = document.querySelector('.btn-coupon');
+  var code  = (input.value || '').trim();
+
+  if (!code) { msgEl.textContent = ''; msgEl.className = 'coupon-msg'; return; }
+
+  btn.textContent = '⏳';
+  btn.disabled = true;
+  msgEl.textContent = '';
+  msgEl.className = 'coupon-msg';
+
+  try {
+    var res = await fetch(API_BASE + '/api/validate-coupon', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code }),
+    });
+    var data = await res.json();
+
+    if (data.valid) {
+      _appliedCoupon = data.promoCodeId;
+      msgEl.textContent = '✅ ' + (data.name || code) + ' — ' + data.discountText;
+      msgEl.className = 'coupon-msg ok';
+
+      var oldEl = document.getElementById('price-old');
+      var newEl = document.getElementById('price-new');
+      oldEl.textContent = (data.originalAmount / 100).toLocaleString('cs-CZ') + ' Kč';
+      newEl.textContent = (data.finalAmount / 100).toLocaleString('cs-CZ') + ' Kč';
+      document.getElementById('price-display').style.display = 'block';
+    } else {
+      _appliedCoupon = null;
+      msgEl.textContent = '❌ ' + (data.error || 'Neplatný kód');
+      msgEl.className = 'coupon-msg err';
+      document.getElementById('price-display').style.display = 'none';
+    }
+  } catch (err) {
+    _appliedCoupon = null;
+    msgEl.textContent = '❌ Chyba při ověřování';
+    msgEl.className = 'coupon-msg err';
+    document.getElementById('price-display').style.display = 'none';
+  } finally {
+    btn.textContent = 'Aplikovat';
+    btn.disabled = false;
+  }
+}
+
 // ── Form Submit ───────────────────────────────────────────────────────────────
 async function handleSubmit(e) {
   const form = e.target;
@@ -1102,6 +1190,7 @@ async function handleSubmit(e) {
   const parentName = (document.getElementById('parent_name').value || '').trim();
   const email      = (document.getElementById('email').value       || '').trim();
   const phone      = (document.getElementById('phone').value       || '').trim();
+  const couponCode = _appliedCoupon ? (document.getElementById('coupon_code').value || '').trim() : '';
 
   btn.textContent = '⏳ Odesílám...';
   btn.disabled = true;
