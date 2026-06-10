@@ -1,0 +1,546 @@
+{
+  "name": "Stripe Notifikace - Ninja Týden",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "stripe-webhook-ninja",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "a1b2c3d4-1111-2222-3333-444444444444",
+      "name": "Stripe Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [260, 380],
+      "webhookId": "stripe-webhook-ninja"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "value": "checkout.session.completed",
+              "output": 0
+            },
+            {
+              "value": "payment_intent.succeeded",
+              "output": 1
+            },
+            {
+              "value": "payment_intent.payment_failed",
+              "output": 2
+            },
+            {
+              "value": "checkout.session.async_payment_succeeded",
+              "output": 3
+            }
+          ]
+        },
+        "dataType": "string",
+        "value1": "={{ $json.body.type }}",
+        "fallbackOutput": 3
+      },
+      "id": "a1b2c3d4-1111-2222-3333-555555555555",
+      "name": "Rozvětvit podle eventu",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 2,
+      "position": [520, 380]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-001",
+              "name": "message",
+              "value": "✅ Nová platba / objednávka\n\nProjekt: Ninja Týden\nČástka: {{ $json.body.data.object.amount_total / 100 }} {{ $json.body.data.object.currency }}\nMěna: {{ $json.body.data.object.currency }}\nJméno: {{ $json.body.data.object.customer_details?.name || '-' }}\nE-mail: {{ $json.body.data.object.customer_details?.email || '-' }}\nStav: {{ $json.body.data.object.payment_status }}\nStripe ID: {{ $json.body.data.object.id }}\nČas: {{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "set-002",
+              "name": "eventType",
+              "value": "checkout.session.completed",
+              "type": "string"
+            },
+            {
+              "id": "set-003",
+              "name": "amount",
+              "value": "={{ $json.body.data.object.amount_total / 100 }}",
+              "type": "number"
+            },
+            {
+              "id": "set-004",
+              "name": "currency",
+              "value": "={{ $json.body.data.object.currency }}",
+              "type": "string"
+            },
+            {
+              "id": "set-005",
+              "name": "customerName",
+              "value": "={{ $json.body.data.object.customer_details?.name || '-' }}",
+              "type": "string"
+            },
+            {
+              "id": "set-006",
+              "name": "customerEmail",
+              "value": "={{ $json.body.data.object.customer_details?.email || '-' }}",
+              "type": "string"
+            },
+            {
+              "id": "set-007",
+              "name": "status",
+              "value": "={{ $json.body.data.object.payment_status }}",
+              "type": "string"
+            },
+            {
+              "id": "set-008",
+              "name": "stripeId",
+              "value": "={{ $json.body.data.object.id }}",
+              "type": "string"
+            },
+            {
+              "id": "set-009",
+              "name": "metadata",
+              "value": "={{ JSON.stringify($json.body.data.object.metadata || {}) }}",
+              "type": "string"
+            },
+            {
+              "id": "set-010",
+              "name": "rawBody",
+              "value": "={{ JSON.stringify($json.body) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-1111-2222-3333-666666666666",
+      "name": "Format: checkout.session.completed",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [780, 100]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-011",
+              "name": "message",
+              "value": "✅ Platba úspěšná (Payment Intent)\n\nProjekt: Ninja Týden\nČástka: {{ $json.body.data.object.amount / 100 }} {{ $json.body.data.object.currency }}\nMěna: {{ $json.body.data.object.currency }}\nE-mail: {{ $json.body.data.object.receipt_email || '-' }}\nStav: {{ $json.body.data.object.status }}\nStripe ID: {{ $json.body.data.object.id }}\nČas: {{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "set-012",
+              "name": "eventType",
+              "value": "payment_intent.succeeded",
+              "type": "string"
+            },
+            {
+              "id": "set-013",
+              "name": "amount",
+              "value": "={{ $json.body.data.object.amount / 100 }}",
+              "type": "number"
+            },
+            {
+              "id": "set-014",
+              "name": "currency",
+              "value": "={{ $json.body.data.object.currency }}",
+              "type": "string"
+            },
+            {
+              "id": "set-015",
+              "name": "customerName",
+              "value": "-",
+              "type": "string"
+            },
+            {
+              "id": "set-016",
+              "name": "customerEmail",
+              "value": "={{ $json.body.data.object.receipt_email || '-' }}",
+              "type": "string"
+            },
+            {
+              "id": "set-017",
+              "name": "status",
+              "value": "={{ $json.body.data.object.status }}",
+              "type": "string"
+            },
+            {
+              "id": "set-018",
+              "name": "stripeId",
+              "value": "={{ $json.body.data.object.id }}",
+              "type": "string"
+            },
+            {
+              "id": "set-019",
+              "name": "metadata",
+              "value": "={{ JSON.stringify($json.body.data.object.metadata || {}) }}",
+              "type": "string"
+            },
+            {
+              "id": "set-020",
+              "name": "rawBody",
+              "value": "={{ JSON.stringify($json.body) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-1111-2222-3333-777777777777",
+      "name": "Format: payment_intent.succeeded",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [780, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-021",
+              "name": "message",
+              "value": "❌ Neúspěšná platba\n\nProjekt: Ninja Týden\nČástka: {{ $json.body.data.object.amount / 100 }} {{ $json.body.data.object.currency }}\nMěna: {{ $json.body.data.object.currency }}\nE-mail: {{ $json.body.data.object.receipt_email || '-' }}\nStav: {{ $json.body.data.object.status }}\nStripe ID: {{ $json.body.data.object.id }}\nDůvod: {{ $json.body.data.object.last_payment_error?.message || 'Neznámý důvod' }}\nČas: {{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "set-022",
+              "name": "eventType",
+              "value": "payment_intent.payment_failed",
+              "type": "string"
+            },
+            {
+              "id": "set-023",
+              "name": "amount",
+              "value": "={{ $json.body.data.object.amount / 100 }}",
+              "type": "number"
+            },
+            {
+              "id": "set-024",
+              "name": "currency",
+              "value": "={{ $json.body.data.object.currency }}",
+              "type": "string"
+            },
+            {
+              "id": "set-025",
+              "name": "customerName",
+              "value": "-",
+              "type": "string"
+            },
+            {
+              "id": "set-026",
+              "name": "customerEmail",
+              "value": "={{ $json.body.data.object.receipt_email || '-' }}",
+              "type": "string"
+            },
+            {
+              "id": "set-027",
+              "name": "status",
+              "value": "={{ $json.body.data.object.status }}",
+              "type": "string"
+            },
+            {
+              "id": "set-028",
+              "name": "stripeId",
+              "value": "={{ $json.body.data.object.id }}",
+              "type": "string"
+            },
+            {
+              "id": "set-029",
+              "name": "metadata",
+              "value": "={{ JSON.stringify($json.body.data.object.metadata || {}) }}",
+              "type": "string"
+            },
+            {
+              "id": "set-030",
+              "name": "rawBody",
+              "value": "={{ JSON.stringify($json.body) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-1111-2222-3333-888888888888",
+      "name": "Format: payment_intent.payment_failed",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [780, 500]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-031",
+              "name": "message",
+              "value": "✅ Asynchronní platba úspěšná\n\nProjekt: Ninja Týden\nČástka: {{ $json.body.data.object.amount_total / 100 }} {{ $json.body.data.object.currency }}\nMěna: {{ $json.body.data.object.currency }}\nJméno: {{ $json.body.data.object.customer_details?.name || '-' }}\nE-mail: {{ $json.body.data.object.customer_details?.email || '-' }}\nStav: {{ $json.body.data.object.payment_status }}\nStripe ID: {{ $json.body.data.object.id }}\nČas: {{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "set-032",
+              "name": "eventType",
+              "value": "checkout.session.async_payment_succeeded",
+              "type": "string"
+            },
+            {
+              "id": "set-033",
+              "name": "amount",
+              "value": "={{ $json.body.data.object.amount_total / 100 }}",
+              "type": "number"
+            },
+            {
+              "id": "set-034",
+              "name": "currency",
+              "value": "={{ $json.body.data.object.currency }}",
+              "type": "string"
+            },
+            {
+              "id": "set-035",
+              "name": "customerName",
+              "value": "={{ $json.body.data.object.customer_details?.name || '-' }}",
+              "type": "string"
+            },
+            {
+              "id": "set-036",
+              "name": "customerEmail",
+              "value": "={{ $json.body.data.object.customer_details?.email || '-' }}",
+              "type": "string"
+            },
+            {
+              "id": "set-037",
+              "name": "status",
+              "value": "={{ $json.body.data.object.payment_status }}",
+              "type": "string"
+            },
+            {
+              "id": "set-038",
+              "name": "stripeId",
+              "value": "={{ $json.body.data.object.id }}",
+              "type": "string"
+            },
+            {
+              "id": "set-039",
+              "name": "metadata",
+              "value": "={{ JSON.stringify($json.body.data.object.metadata || {}) }}",
+              "type": "string"
+            },
+            {
+              "id": "set-040",
+              "name": "rawBody",
+              "value": "={{ JSON.stringify($json.body) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-1111-2222-3333-999999999999",
+      "name": "Format: async_payment_succeeded",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [780, 700]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "={{ $json.message }}",
+        "additionalFields": {}
+      },
+      "id": "a1b2c3d4-1111-2222-3333-aaaaaaaaaaaa",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.1,
+      "position": [1060, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@ninja-tyden.cz",
+        "toEmail": "info@ninja-tyden.cz",
+        "subject": "Stripe Notifikace - Ninja Týden",
+        "text": "={{ $json.message }}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-1111-2222-3333-bbbbbbbbbbbb",
+      "name": "Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1060, 500]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "values": [
+              { "column": "A", "value": "={{ $now }}" },
+              { "column": "B", "value": "={{ $json.eventType }}" },
+              { "column": "C", "value": "={{ $json.customerName }}" },
+              { "column": "D", "value": "={{ $json.customerEmail }}" },
+              { "column": "E", "value": "={{ $json.amount }}" },
+              { "column": "F", "value": "={{ $json.currency }}" },
+              { "column": "G", "value": "={{ $json.status }}" },
+              { "column": "H", "value": "={{ $json.stripeId }}" },
+              { "column": "I", "value": "={{ $json.metadata }}" },
+              { "column": "J", "value": "={{ $json.rawBody }}" }
+            ]
+          }
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-1111-2222-3333-cccccccccccc",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.2,
+      "position": [1060, 700]
+    }
+  ],
+  "connections": {
+    "Stripe Webhook": {
+      "main": [
+        [
+          {
+            "node": "Rozvětvit podle eventu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rozvětvit podle eventu": {
+      "main": [
+        [
+          {
+            "node": "Format: checkout.session.completed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Format: payment_intent.succeeded",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Format: payment_intent.payment_failed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Format: async_payment_succeeded",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format: checkout.session.completed": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format: payment_intent.succeeded": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format: payment_intent.payment_failed": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format: async_payment_succeeded": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": []
+}
