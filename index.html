@@ -1042,39 +1042,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </form>
         <iframe name="webhook-frame" style="display:none"></iframe>
 
-        <!-- Potvrzení při platbě převodem -->
-        <div id="payment-transfer-info" style="display:none;">
-          <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:1.5rem; text-align:center; margin-top:1.5rem;">
-            <div style="color:var(--accent); font-size:2rem; margin-bottom:0.75rem;">✅</div>
-            <h3 style="color:white; font-weight:700; margin-bottom:0.75rem; font-size:1.1rem;">Přihláška odeslána!</h3>
-            <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:1.5rem;">Pro dokončení registrace prosím uhraďte částku bankovním převodem. Údaje najdete níže.</p>
-            <div style="background:rgba(0,0,0,0.2); border-radius:12px; padding:1.25rem; text-align:left; margin-bottom:1.5rem;">
-              <div style="margin-bottom:0.75rem;">
-                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Příjemce</div>
-                <div style="color:white; font-weight:600;">[Doplňte název]</div>
-              </div>
-              <div style="margin-bottom:0.75rem;">
-                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Číslo účtu / IBAN</div>
-                <div style="color:white; font-weight:600;">CZxx XXXX XXXX XXXX XXXX XXXX</div>
-              </div>
-              <div style="margin-bottom:0.75rem;">
-                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Částka</div>
-                <div style="color:white; font-weight:600;">3 490 Kč</div>
-              </div>
-              <div style="margin-bottom:0.75rem;">
-                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Variabilní symbol</div>
-                <div style="color:white; font-weight:600;">[Doplňte VS]</div>
-              </div>
-              <div>
-                <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Zpráva pro příjemce</div>
-                <div style="color:white; font-weight:600;" id="transfer-msg">Ninja Týden</div>
-              </div>
+        <!-- Děkovná stránka po odeslání -->
+        <div id="thank-you" style="display:none;">
+          <div style="text-align:center; margin-bottom:1.5rem;">
+            <div style="font-size:2.5rem; margin-bottom:0.75rem;">🎉</div>
+            <h3 style="color:white; font-weight:800; font-size:1.25rem; margin-bottom:0.5rem;">Přihláška odeslána!</h3>
+            <p style="color:#94a3b8; font-size:0.95rem;">Děkujeme. Vaše přihláška byla úspěšně zaznamenána.</p>
+          </div>
+
+          <!-- Platební karta -->
+          <div id="thank-you-card" style="display:none;">
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1.5rem; text-align:center;">
+              <p style="color:white; font-weight:600; margin-bottom:1rem;">Zbývá dokončit platbu kartou</p>
+              <button type="button" class="btn-register" onclick="startStripePayment()" style="margin-top:0;">
+                💳 Zaplatit <span id="ty-card-amount">3 490 Kč</span>
+              </button>
+              <p style="color:#64748b; font-size:0.8rem; margin-top:0.75rem;">Bezpečná platba přes Stripe</p>
             </div>
-            <div style="text-align:center;">
-              <div style="color:#94a3b8; font-size:0.8rem; margin-bottom:0.75rem;">Naskenujte QR kód v bankovní aplikaci</div>
-              <div id="qr-payment-transfer" style="display:inline-block; background:white; padding:10px; border-radius:8px;"></div>
+          </div>
+
+          <!-- Bankovní převod -->
+          <div id="thank-you-transfer" style="display:none;">
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:1.5rem; text-align:center;">
+              <div style="color:var(--accent); font-size:2rem; margin-bottom:0.75rem;">✅</div>
+              <h3 style="color:white; font-weight:700; margin-bottom:0.75rem; font-size:1.1rem;">Přihláška odeslána!</h3>
+              <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:1.5rem;">Pro dokončení registrace prosím uhraďte částku bankovním převodem. Údaje najdete níže.</p>
+              <div style="background:rgba(0,0,0,0.2); border-radius:12px; padding:1.25rem; text-align:left; margin-bottom:1.5rem;">
+                <div style="margin-bottom:0.75rem;">
+                  <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Příjemce</div>
+                  <div style="color:white; font-weight:600;">[Doplňte název]</div>
+                </div>
+                <div style="margin-bottom:0.75rem;">
+                  <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Číslo účtu / IBAN</div>
+                  <div style="color:white; font-weight:600;">CZxx XXXX XXXX XXXX XXXX XXXX</div>
+                </div>
+                <div style="margin-bottom:0.75rem;">
+                  <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Částka</div>
+                  <div style="color:white; font-weight:600;">3 490 Kč</div>
+                </div>
+                <div style="margin-bottom:0.75rem;">
+                  <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Variabilní symbol</div>
+                  <div style="color:white; font-weight:600;">[Doplňte VS]</div>
+                </div>
+                <div>
+                  <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Zpráva pro příjemce</div>
+                  <div style="color:white; font-weight:600;" id="transfer-msg">Ninja Týden</div>
+                </div>
+              </div>
+              <div style="text-align:center;">
+                <div style="color:#94a3b8; font-size:0.8rem; margin-bottom:0.75rem;">Naskenujte QR kód v bankovní aplikaci</div>
+                <div id="qr-payment-transfer" style="display:inline-block; background:white; padding:10px; border-radius:8px;"></div>
+              </div>
+              <p style="color:#64748b; font-size:0.82rem; margin-top:1rem; margin-bottom:0;">Po obdržení platby vám pošleme potvrzení na e-mail.</p>
             </div>
-            <p style="color:#64748b; font-size:0.82rem; margin-top:1rem; margin-bottom:0;">Po obdržení platby vám pošleme potvrzení na e-mail.</p>
           </div>
         </div>
       </div>
@@ -1166,59 +1186,33 @@ async function applyCoupon() {
       oldEl.textContent = (data.originalAmount / 100).toLocaleString('cs-CZ') + ' Kč';
       newEl.textContent = (data.finalAmount / 100).toLocaleString('cs-CZ') + ' Kč';
       document.getElementById('price-display').style.display = 'block';
+      document.getElementById('ty-card-amount').textContent = (data.finalAmount / 100).toLocaleString('cs-CZ') + ' Kč';
     } else {
       _appliedCoupon = null;
       msgEl.textContent = '❌ ' + (data.error || 'Neplatný kód');
       msgEl.className = 'coupon-msg err';
       document.getElementById('price-display').style.display = 'none';
+      document.getElementById('ty-card-amount').textContent = '3 490 Kč';
     }
   } catch (err) {
     _appliedCoupon = null;
     msgEl.textContent = '❌ Chyba při ověřování';
     msgEl.className = 'coupon-msg err';
     document.getElementById('price-display').style.display = 'none';
+    document.getElementById('ty-card-amount').textContent = '3 490 Kč';
   } finally {
     btn.textContent = 'Aplikovat';
     btn.disabled = false;
   }
 }
 
-// ── Form Submit ───────────────────────────────────────────────────────────────
-async function handleSubmit(e) {
-  const form = e.target;
-  const btn = form.querySelector('.btn-register');
-  const paymentMethod = form.querySelector('input[name="payment_method"]:checked').value;
+// ── Stripe Payment ────────────────────────────────────────────────────────────
+async function startStripePayment() {
   const childName  = (document.getElementById('child_name').value  || '').trim() || 'Dítě';
   const parentName = (document.getElementById('parent_name').value || '').trim();
   const email      = (document.getElementById('email').value       || '').trim();
   const phone      = (document.getElementById('phone').value       || '').trim();
-  const couponCode = _appliedCoupon ? (document.getElementById('coupon_code').value || '').trim() : '';
 
-  btn.textContent = '⏳ Odesílám...';
-  btn.disabled = true;
-
-  // ── Bank transfer flow (unchanged) ──
-  if (paymentMethod === 'transfer') {
-    setTimeout(function() {
-      form.style.display = 'none';
-      document.getElementById('payment-transfer-info').style.display = 'block';
-      document.getElementById('transfer-msg').textContent = 'Ninja Týden — ' + childName;
-
-      var qrContainer = document.getElementById('qr-payment-transfer');
-      if (qrContainer && typeof QRCode !== 'undefined' && qrContainer.innerHTML === '') {
-        var spayd = 'SPD*1.0*ACC:CZ0000000000000000000000*AM:3490.00*CC:CZK*MSG:Ninja Tyden ' + childName;
-        new QRCode(qrContainer, {
-          text: spayd,
-          width: 180, height: 180,
-          colorDark: '#000000', colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.M
-        });
-      }
-    }, 1000);
-    return;
-  }
-
-  // ── Card payment — Stripe Embedded Checkout ──
   openStripeModal();
 
   try {
@@ -1244,10 +1238,52 @@ async function handleSubmit(e) {
     var errEl = document.getElementById('checkout-error');
     errEl.textContent = 'Nepodařilo se načíst platební formulář. Zkuste to prosím znovu nebo nás kontaktujte na info@ninja-tyden.cz';
     errEl.style.display = 'block';
-  } finally {
-    btn.textContent = '🥷 Přihlásit dítě na Ninja den!';
-    btn.disabled = false;
   }
+}
+
+// ── Form Submit ───────────────────────────────────────────────────────────────
+async function handleSubmit(e) {
+  const form = e.target;
+  const btn = form.querySelector('.btn-register');
+  const paymentMethod = form.querySelector('input[name="payment_method"]:checked').value;
+  const childName  = (document.getElementById('child_name').value  || '').trim() || 'Dítě';
+
+  // ── ntfy notification ─────────────────────────────────────────────────────────
+  try {
+    fetch('https://ntfy.sh/ninja-stripe', {
+      method: 'POST',
+      headers: { 'Title': 'Nová přihláška Ninja Týden', 'Priority': 'high' },
+      body: 'Nová přihláška: ' + childName + ' (' + (document.getElementById('child_age').value || '') + ')'
+    });
+  } catch (e) { /* ignore ntfy errors */ }
+
+  btn.textContent = '⏳ Odesílám...';
+  btn.disabled = true;
+
+  // Skryj formulář a zobraz děkovnou stránku (pro obě metody)
+  setTimeout(function() {
+    form.style.display = 'none';
+    document.getElementById('thank-you').style.display = 'block';
+
+    if (paymentMethod === 'transfer') {
+      document.getElementById('thank-you-transfer').style.display = 'block';
+      document.getElementById('transfer-msg').textContent = 'Ninja Týden — ' + childName;
+
+      var qrContainer = document.getElementById('qr-payment-transfer');
+      if (qrContainer && typeof QRCode !== 'undefined' && qrContainer.innerHTML === '') {
+        var spayd = 'SPD*1.0*ACC:CZ0000000000000000000000*AM:3490.00*CC:CZK*MSG:Ninja Tyden ' + childName;
+        new QRCode(qrContainer, {
+          text: spayd,
+          width: 180, height: 180,
+          colorDark: '#000000', colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      }
+    } else {
+      document.getElementById('thank-you-card').style.display = 'block';
+      startStripePayment();
+    }
+  }, 600);
 }
 
 // ── QR code (bank transfer panel, left column) ────────────────────────────────
