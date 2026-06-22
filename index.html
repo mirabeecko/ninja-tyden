@@ -923,11 +923,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1rem 1.25rem;">
             <div style="margin-bottom:0.75rem;">
               <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Příjemce</div>
-              <div style="color:white; font-weight:600; font-size:0.9rem;">[Doplňte název]</div>
+              <div style="color:white; font-weight:600; font-size:0.9rem;">Tělovýchovná jednota Krupka z.s.</div>
             </div>
             <div style="margin-bottom:0.75rem;">
-              <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Číslo účtu / IBAN</div>
-              <div style="color:white; font-weight:600; font-size:0.9rem;">CZxx XXXX XXXX XXXX XXXX XXXX</div>
+              <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Číslo účtu</div>
+              <div style="color:white; font-weight:600; font-size:0.9rem;">356935480/0300</div>
             </div>
             <div style="margin-bottom:0.75rem;">
               <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Částka</div>
@@ -935,7 +935,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div style="margin-bottom:0.75rem;">
               <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Variabilní symbol</div>
-              <div style="color:white; font-weight:600; font-size:0.9rem;">[Doplňte VS]</div>
+              <div style="color:white; font-weight:600; font-size:0.9rem;" id="vs-static">telefonní číslo z přihlášky</div>
             </div>
             <div style="text-align:center; margin-top:1rem;">
               <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.5rem;">Naskenujte QR kód v bankovní aplikaci</div>
@@ -1070,11 +1070,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <div style="background:rgba(0,0,0,0.2); border-radius:12px; padding:1.25rem; text-align:left; margin-bottom:1.5rem;">
                 <div style="margin-bottom:0.75rem;">
                   <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Příjemce</div>
-                  <div style="color:white; font-weight:600;">[Doplňte název]</div>
+                  <div style="color:white; font-weight:600;">Tělovýchovná jednota Krupka z.s.</div>
                 </div>
                 <div style="margin-bottom:0.75rem;">
-                  <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Číslo účtu / IBAN</div>
-                  <div style="color:white; font-weight:600;">CZxx XXXX XXXX XXXX XXXX XXXX</div>
+                  <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Číslo účtu</div>
+                  <div style="color:white; font-weight:600;">356935480/0300</div>
                 </div>
                 <div style="margin-bottom:0.75rem;">
                   <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Částka</div>
@@ -1082,7 +1082,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <div style="margin-bottom:0.75rem;">
                   <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Variabilní symbol</div>
-                  <div style="color:white; font-weight:600;">[Doplňte VS]</div>
+                  <div style="color:white; font-weight:600;" id="vs-thankyou">[Doplňte VS]</div>
                 </div>
                 <div>
                   <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.25rem;">Zpráva pro příjemce</div>
@@ -1270,8 +1270,11 @@ async function handleSubmit(e) {
       document.getElementById('transfer-msg').textContent = 'Ninja Týden — ' + childName;
 
       var qrContainer = document.getElementById('qr-payment-transfer');
-      if (qrContainer && typeof QRCode !== 'undefined' && qrContainer.innerHTML === '') {
-        var spayd = 'SPD*1.0*ACC:CZ0000000000000000000000*AM:3490.00*CC:CZK*MSG:Ninja Tyden ' + childName;
+      var phone = (document.getElementById('phone').value || '').trim().replace(/\s/g, '');
+      document.getElementById('vs-thankyou').textContent = phone || '[Doplňte VS]';
+      if (qrContainer && typeof QRCode !== 'undefined') {
+        qrContainer.innerHTML = '';
+        var spayd = 'SPD*1.0*ACC:CZ6303000000000356935480*AM:3490.00*CC:CZK*X-VS:' + phone + '*MSG:Ninja Tyden ' + childName;
         new QRCode(qrContainer, {
           text: spayd,
           width: 180, height: 180,
@@ -1287,16 +1290,28 @@ async function handleSubmit(e) {
 }
 
 // ── QR code (bank transfer panel, left column) ────────────────────────────────
-document.addEventListener('DOMContentLoaded', function() {
+function updateStaticQR() {
   var qrContainer = document.getElementById('qr-payment');
+  var phone = (document.getElementById('phone').value || '').trim().replace(/\s/g, '');
+  var vsEl = document.getElementById('vs-static');
+  if (vsEl) { vsEl.textContent = phone || 'telefonní číslo z přihlášky'; }
   if (qrContainer && typeof QRCode !== 'undefined') {
-    var spayd = 'SPD*1.0*ACC:CZ0000000000000000000000*AM:3490.00*CC:CZK*MSG:Ninja Tyden';
+    qrContainer.innerHTML = '';
+    var spayd = 'SPD*1.0*ACC:CZ6303000000000356935480*AM:3490.00*CC:CZK' + (phone ? '*X-VS:' + phone : '') + '*MSG:Ninja Tyden';
     new QRCode(qrContainer, {
       text: spayd,
       width: 160, height: 160,
       colorDark: '#000000', colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.M
     });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateStaticQR();
+  var phoneInput = document.getElementById('phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', updateStaticQR);
   }
 });
 
