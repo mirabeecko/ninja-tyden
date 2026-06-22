@@ -526,16 +526,46 @@
           "mappingMode": "defineBelow",
           "value": {
             "values": [
-              { "column": "A", "value": "={{ $now }}" },
-              { "column": "B", "value": "={{ $json.eventType }}" },
-              { "column": "C", "value": "={{ $json.customerName }}" },
-              { "column": "D", "value": "={{ $json.customerEmail }}" },
-              { "column": "E", "value": "={{ $json.amount }}" },
-              { "column": "F", "value": "={{ $json.currency }}" },
-              { "column": "G", "value": "={{ $json.status }}" },
-              { "column": "H", "value": "={{ $json.stripeId }}" },
-              { "column": "I", "value": "={{ $json.metadata }}" },
-              { "column": "J", "value": "={{ $json.rawBody }}" }
+              {
+                "column": "A",
+                "value": "={{ $now }}"
+              },
+              {
+                "column": "B",
+                "value": "={{ $json.eventType }}"
+              },
+              {
+                "column": "C",
+                "value": "={{ $json.customerName }}"
+              },
+              {
+                "column": "D",
+                "value": "={{ $json.customerEmail }}"
+              },
+              {
+                "column": "E",
+                "value": "={{ $json.amount }}"
+              },
+              {
+                "column": "F",
+                "value": "={{ $json.currency }}"
+              },
+              {
+                "column": "G",
+                "value": "={{ $json.status }}"
+              },
+              {
+                "column": "H",
+                "value": "={{ $json.stripeId }}"
+              },
+              {
+                "column": "I",
+                "value": "={{ $json.metadata }}"
+              },
+              {
+                "column": "J",
+                "value": "={{ $json.rawBody }}"
+              }
             ]
           }
         },
@@ -634,6 +664,33 @@
         2580,
         500
       ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@ninja-tyden.cz",
+        "toEmail": "={{ $json.customerEmail }}",
+        "subject": "✅ Potvrzení přihlášky – Ninja Týden",
+        "text": "Dobrý den,\n\nděkujeme za přihlášku na Ninja Týden. Vaše registrace byla úspěšně zaznamenána.\n\nDetaily přihlášky:\n- Projekt: Ninja Týden\n- Termín: 7.–11. července 2026\n- Částka: {{ $json.amount / 100 }} {{ $json.currency }}\n- Jméno: {{ $json.customerName }}\n- E-mail: {{ $json.customerEmail }}\n\nV případě dotazů nás kontaktujte:\n- E-mail: info@ninja-tyden.cz\n- Telefon: 735 847 185\n\nS pozdravem,\ntým Ninja Týden\nhttps://ninja-tyden.cz",
+        "html": "<html><body style=\"font-family:Arial,sans-serif;line-height:1.6;color:#333;\"><div style=\"max-width:600px;margin:0 auto;padding:20px;\"><h2 style=\"color:#16a34a;\">✅ Potvrzení přihlášky – Ninja Týden</h2><p>Dobrý den,</p><p>děkujeme za přihlášku. Vaše registrace byla úspěšně zaznamenána.</p><div style=\"background:#f0fdf4;border-radius:8px;padding:16px;margin:20px 0;\"><h3 style=\"margin-top:0;color:#14532d;\">📋 Detaily přihlášky</h3><p><strong>Projekt:</strong> Ninja Týden</p><p><strong>Termín:</strong> 7.–11. července 2026</p><p><strong>Částka:</strong> {{ $json.amount / 100 }} {{ $json.currency }}</p><p><strong>Jméno:</strong> {{ $json.customerName }}</p><p><strong>E-mail:</strong> {{ $json.customerEmail }}</p></div><p>V případě dotazů nás neváhejte kontaktovat:</p><div style=\"margin:24px 0;\"><a href=\"mailto:info@ninja-tyden.cz\" style=\"display:inline-block;background:#16a34a;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;margin-right:12px;font-weight:bold;\">✉️ Odpovědět</a><a href=\"tel:+420735847185\" style=\"display:inline-block;background:#f59e0b;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;font-weight:bold;\">📞 Zavolat</a></div><p style=\"color:#64748b;font-size:14px;margin-top:32px;\">S pozdravem,<br><strong>tým Ninja Týden</strong><br><a href=\"https://ninja-tyden.cz\">ninja-tyden.cz</a></p></div></body></html>",
+        "options": {
+          "replyTo": "info@ninja-tyden.cz"
+        }
+      },
+      "id": "email-002",
+      "name": "Email Customer",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1900,
+        800
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "YOUR_SMTP_CREDS_ID",
+          "name": "SMTP Account"
+        }
+      },
+      "onError": "continueRegularOutput"
     }
   ],
   "pinData": {},
@@ -754,6 +811,11 @@
             "node": "Sheets Append",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Email Customer",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -773,6 +835,11 @@
           },
           {
             "node": "Sheets Append",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email Customer",
             "type": "main",
             "index": 0
           }
@@ -815,6 +882,11 @@
           },
           {
             "node": "Sheets Append",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email Customer",
             "type": "main",
             "index": 0
           }
@@ -877,6 +949,17 @@
         [
           {
             "node": "OK: No Errors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Customer": {
+      "main": [
+        [
+          {
+            "node": "Execution Summary",
             "type": "main",
             "index": 0
           }
