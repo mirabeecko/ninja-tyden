@@ -939,7 +939,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div style="text-align:center; margin-top:1rem;">
               <div style="color:#94a3b8; font-size:0.75rem; margin-bottom:0.5rem;">Klepněte na QR kód pro platbu z mobilu, nebo naskenujte v jiném zařízení</div>
-              <a id="qr-payment-link" href="#" target="_blank" rel="noopener" style="display:inline-block; text-decoration:none; cursor:pointer;">
+              <a id="qr-payment-link" href="javascript:void(0)" rel="noopener" style="display:inline-block; text-decoration:none; cursor:pointer;" onclick="openBankPayment('static')">
                 <div id="qr-payment" style="display:inline-block; background:white; padding:8px; border-radius:8px;"></div>
               </a>
             </div>
@@ -1093,7 +1093,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </div>
               <div style="text-align:center;">
                 <div style="color:#94a3b8; font-size:0.8rem; margin-bottom:0.75rem;">Klepněte na QR kód pro platbu z mobilu, nebo naskenujte v jiném zařízení</div>
-                <a id="qr-payment-transfer-link" href="#" target="_blank" rel="noopener" style="display:inline-block; text-decoration:none; cursor:pointer;">
+                <a id="qr-payment-transfer-link" href="javascript:void(0)" rel="noopener" style="display:inline-block; text-decoration:none; cursor:pointer;" onclick="openBankPayment('transfer')">
                   <div id="qr-payment-transfer" style="display:inline-block; background:white; padding:10px; border-radius:8px;"></div>
                 </a>
               </div>
@@ -1277,8 +1277,7 @@ async function handleSubmit(e) {
       var phone = (document.getElementById('phone').value || '').trim().replace(/\s/g, '');
       document.getElementById('vs-thankyou').textContent = phone || '[Doplňte VS]';
       var spaydTransfer = 'SPD*1.0*ACC:CZ6303000000000356935480*AM:3490.00*CC:CZK*X-VS:' + phone + '*MSG:Ninja Tyden ' + childName;
-      var qrLinkTransfer = document.getElementById('qr-payment-transfer-link');
-      if (qrLinkTransfer) { qrLinkTransfer.href = 'spayd://' + spaydTransfer; }
+      _lastSpaydTransfer = spaydTransfer;
       if (qrContainer && typeof QRCode !== 'undefined') {
         qrContainer.innerHTML = '';
         new QRCode(qrContainer, {
@@ -1302,8 +1301,7 @@ function updateStaticQR() {
   var vsEl = document.getElementById('vs-static');
   if (vsEl) { vsEl.textContent = phone || 'telefonní číslo z přihlášky'; }
   var spayd = 'SPD*1.0*ACC:CZ6303000000000356935480*AM:3490.00*CC:CZK' + (phone ? '*X-VS:' + phone : '') + '*MSG:Ninja Tyden';
-  var qrLink = document.getElementById('qr-payment-link');
-  if (qrLink) { qrLink.href = 'spayd://' + spayd; }
+  _lastSpaydStatic = spayd;
   if (qrContainer && typeof QRCode !== 'undefined') {
     qrContainer.innerHTML = '';
     new QRCode(qrContainer, {
@@ -1322,6 +1320,16 @@ document.addEventListener('DOMContentLoaded', function() {
     phoneInput.addEventListener('input', updateStaticQR);
   }
 });
+
+// ── Mobile bank payment (QR click) ────────────────────────────────────────────
+var _lastSpaydStatic = '';
+var _lastSpaydTransfer = '';
+
+function openBankPayment(type) {
+  var spayd = type === 'transfer' ? _lastSpaydTransfer : _lastSpaydStatic;
+  if (!spayd) { alert('Nejprve vyplňte telefonní číslo v přihlášce.'); return; }
+  window.location.href = 'spayd://' + spayd;
+}
 
 // ── Smooth scroll ─────────────────────────────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(function(a) {
